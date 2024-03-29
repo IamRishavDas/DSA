@@ -483,12 +483,13 @@ public class Array {
         return -1;
     }
 
-    // max profit can be gained to maximize the profit while selling the stock after buying it in previous
-    public static int profitToBuyAndSellStock(int[] arr){
+    // max profit can be gained to maximize the profit while selling the stock after
+    // buying it in previous
+    public static int profitToBuyAndSellStock(int[] arr) {
         int maxProfit = 0;
         int n = arr.length;
         int min = arr[0];
-        for(int i=0; i<n; i++){
+        for (int i = 0; i < n; i++) {
             int profit = arr[i] - min;
             maxProfit = Math.max(maxProfit, profit);
             min = Math.min(arr[i], min);
@@ -503,12 +504,14 @@ public class Array {
         for (int i : arr) {
             sum += i;
             max = Math.max(max, sum);
-            if (sum < 0) sum = 0;
+            if (sum < 0)
+                sum = 0;
         }
         return max;
     }
 
-    // rearrange the array elements by their sign where the the number of positive elements is equals to then number of negavtive elements
+    // rearrange the array elements by their sign where the the number of positive
+    // elements is equals to then number of negavtive elements
     public static int[] rearrangeBySign(int[] arr) {
         int n = arr.length;
         var res = new int[n];
@@ -531,88 +534,87 @@ public class Array {
     // neg = -2 -1
     // 1 -2 4 -1 12 6
     // number of +ve is not necessarily equls to number of -ve s
-    public static void rearrangeBySign(int[] arr, int n){
+    public static void rearrangeBySign(int[] arr, int n) {
         var pos = new ArrayList<Integer>();
         var neg = new ArrayList<Integer>();
 
-        for(int i: arr){
-            if(i >= 0){
+        for (int i : arr) {
+            if (i >= 0) {
                 pos.add(i);
             } else {
                 neg.add(i);
             }
         }
 
-        if(pos.size() > neg.size()){
-            for(int i=0; i<neg.size(); i++){
-                arr[2*i] = pos.get(i);
-                arr[2*i+1] = neg.get(i);
+        if (pos.size() > neg.size()) {
+            for (int i = 0; i < neg.size(); i++) {
+                arr[2 * i] = pos.get(i);
+                arr[2 * i + 1] = neg.get(i);
             }
-            int remIndex = neg.size()*2;
-            for(int i = neg.size(); i<pos.size(); i++){
+            int remIndex = neg.size() * 2;
+            for (int i = neg.size(); i < pos.size(); i++) {
                 arr[remIndex++] = pos.get(i);
             }
         } else {
-            for(int i=0; i<pos.size(); i++){
-                arr[2*i] = pos.get(i);
-                arr[2*i+1] = neg.get(i);
+            for (int i = 0; i < pos.size(); i++) {
+                arr[2 * i] = pos.get(i);
+                arr[2 * i + 1] = neg.get(i);
             }
-            int remIndex = pos.size()*2;
-            for(int i = pos.size(); i<neg.size(); i++){
+            int remIndex = pos.size() * 2;
+            for (int i = pos.size(); i < neg.size(); i++) {
                 arr[remIndex++] = neg.get(i);
             }
         }
     }
 
-
     // swaping two elements in an array
-    public static void swap(int[] arr, int i, int j){
+    public static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
-    }    
+    }
 
     // find out the next permutaion
-    public static void nextPermutation(int[] arr){
+    public static void nextPermutation(int[] arr) {
         int ind = -1;
         int n = arr.length;
-        for(int i=n-2;i>=0;i--){
-            if(arr[i] < arr[i+1]){
+        for (int i = n - 2; i >= 0; i--) {
+            if (arr[i] < arr[i + 1]) {
                 ind = i;
                 break;
             }
         }
-        if(ind == -1){
-            reverse(arr, 0, n-1);
+        if (ind == -1) {
+            reverse(arr, 0, n - 1);
             return;
         }
-        for(int i=n-1; i>=0; i--){
-            if(arr[ind] < arr[i]){
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr[ind] < arr[i]) {
                 swap(arr, ind, i);
                 break;
             }
         }
-        reverse(arr, ind+1, n-1);
+        reverse(arr, ind + 1, n - 1);
     }
 
     // leaders in an array
-    public static List<Integer> leadersArray(int[] arr){
+    public static List<Integer> leadersArray(int[] arr) {
 
         int n = arr.length;
 
-        if(n == 1){
+        if (n == 1) {
             return Arrays.asList(arr[0]);
         }
 
         List<Integer> list = new ArrayList<>();
-        for(int i=0; i<n; i++){
+        for (int i = 0; i < n; i++) {
             boolean greater = false;
-            for(int j = i+1; j<n; j++){
-                if(arr[i] < arr[j]){
+            for (int j = i + 1; j < n; j++) {
+                if (arr[i] < arr[j]) {
                     greater = true;
                 }
             }
-            if(!greater){
+            if (!greater) {
                 list.add(arr[i]);
             }
         }
@@ -621,13 +623,13 @@ public class Array {
     }
 
     // leaders in an array (optimal)
-    public static List<Integer> leaders(int[] arr){
+    public static List<Integer> leaders(int[] arr) {
         var list = new ArrayList<Integer>();
         int n = arr.length;
 
         int max = Integer.MIN_VALUE;
-        for(int i = n-1; i>=0; i--){
-            if(arr[i] > max ){
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr[i] > max) {
                 list.add(arr[i]);
                 max = Math.max(max, arr[i]);
             }
@@ -637,9 +639,10 @@ public class Array {
         return list;
     }
 
-    public static boolean ls(int[] arr, int target){
-        for(int i: arr){
-            if(i == target) return true;
+    public static boolean ls(int[] arr, int target) {
+        for (int i : arr) {
+            if (i == target)
+                return true;
         }
         return false;
     }
@@ -647,14 +650,15 @@ public class Array {
     // longest consiquitive sequence
     // (Time Complexity - O(n^2) using linear search)
     // (Time Complexity - O(n*logn) using binary search)
-    public static int longestConsiquitiveSequence(int[] arr){
+    public static int longestConsiquitiveSequence(int[] arr) {
         int longest = 1;
         int n = arr.length;
-        if(n == 0) return n;
-        for(int i=0; i<n; i++){
+        if (n == 0)
+            return n;
+        for (int i = 0; i < n; i++) {
             int x = arr[i];
             int count = 1;
-            while(ls(arr, x+1) == true){
+            while (ls(arr, x + 1) == true) {
                 x++;
                 count++;
             }
@@ -664,39 +668,41 @@ public class Array {
     }
 
     // time complexity - > O(nlogn) + O(n)
-    public static int longestConsiquitiveSequence(int[] arr, int n){
-        if(n == 0) return n;
+    public static int longestConsiquitiveSequence(int[] arr, int n) {
+        if (n == 0)
+            return n;
         Arrays.sort(arr);
         int longest = 1;
         int currCount = 0;
         int lastSmaller = Integer.MIN_VALUE;
-        for(int i=0; i<n; i++){
-            if(arr[i] - 1 == lastSmaller){
+        for (int i = 0; i < n; i++) {
+            if (arr[i] - 1 == lastSmaller) {
                 currCount++;
                 lastSmaller = arr[i];
-            } else if(arr[i] != lastSmaller){
+            } else if (arr[i] != lastSmaller) {
                 currCount = 1;
                 lastSmaller = arr[i];
-            } 
+            }
             longest = Math.max(longest, currCount);
         }
         return longest;
     }
 
     // optimal solution is using set data structure
-    public static int longestConsiquitiveSequence(int[] arr, String code){
+    public static int longestConsiquitiveSequence(int[] arr, String code) {
         int n = arr.length;
-        if(n == 0) return n;
+        if (n == 0)
+            return n;
         HashSet<Integer> set = new HashSet<>();
-        for(int i: arr){
+        for (int i : arr) {
             set.add(i);
         }
         int longest = 1;
-        for(int i: set){
-            if(!set.contains(i-1)){
+        for (int i : set) {
+            if (!set.contains(i - 1)) {
                 int count = 1;
                 int x = i;
-                while(set.contains(x + 1)){
+                while (set.contains(x + 1)) {
                     x++;
                     count++;
                 }
@@ -708,19 +714,19 @@ public class Array {
 
     // set matrix to zeros
     // brute force solution
-    public static void setMatrixToZeros(int[][] arr){
-        for(int i=0; i<arr.length; i++){
-            for(int j=0; j<arr[i].length; j++){
-                if(arr[i][j] == 0){
-                    markRow(arr,i);
-                    markCol(arr,j);
+    public static void setMatrixToZeros(int[][] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] == 0) {
+                    markRow(arr, i);
+                    markCol(arr, j);
                 }
             }
         }
 
-        for(int i=0; i<arr.length; i++){
-            for(int j=0; j<arr[i].length; j++){
-                if(arr[i][j] == -1){
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] == -1) {
                     arr[i][j] = 0;
                 }
             }
@@ -730,31 +736,31 @@ public class Array {
 
     }
 
-    public static void markRow(int[][] arr, int row){
-        for(int j=0; j<arr[row].length; j++){
-            if(arr[row][j] != 0)
+    public static void markRow(int[][] arr, int row) {
+        for (int j = 0; j < arr[row].length; j++) {
+            if (arr[row][j] != 0)
                 arr[row][j] = -1;
         }
     }
-    public static void markCol(int[][] arr, int col){
-        for(int i=0; i<arr.length; i++){
-            if(arr[i][col] != 0)
+
+    public static void markCol(int[][] arr, int col) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][col] != 0)
                 arr[i][col] = -1;
         }
     }
 
-
     // rotate90 an image by 90 degree
-    public static int[][] rotate90(int[][] mat){
+    public static int[][] rotate90(int[][] mat) {
         int row = mat.length;
         int col = mat[0].length;
 
         var res = new int[col][row];
         int newCol = row;
 
-        for(int i=0; i<row; i++){
-            for(int j=0; j<col; j++){
-                res[j][newCol-i-1] = mat[i][j];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                res[j][newCol - i - 1] = mat[i][j];
             }
         }
         // mat = null;
@@ -762,43 +768,80 @@ public class Array {
     }
 
     // optimal solution for rotate an image by 90 degree
-    public static void swap(int[][] mat, int i, int j){
+    public static void swap(int[][] mat, int i, int j) {
         int temp = mat[i][j];
         mat[i][j] = mat[j][i];
         mat[j][i] = temp;
     }
 
-    public static void transpose(int[][] mat){
-        for(int i=0; i<mat.length; i++){
-            for(int j=0; j<mat[i].length; j++){
-                if(i != j && i>j){
+    public static void transpose(int[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[i].length; j++) {
+                if (i != j && i > j) {
                     swap(mat, i, j);
                 }
             }
         }
     }
 
-    public static void reverseEveryRow(int[][] mat){
-        for(int i=0; i<mat.length; i++){
-            reverse(mat[i], 0, mat[i].length-1);
+    public static void reverseEveryRow(int[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            reverse(mat[i], 0, mat[i].length - 1);
         }
     }
 
-    public static void rotate90(int[][] mat, String s){
+    public static void rotate90(int[][] mat, String s) {
         transpose(mat);
         reverseEveryRow(mat);
     }
 
     // print matrix in spiral order
-    public static void printSpital(int[][] mat){
+    public static void printSpital(int[][] mat) {
+        int row = mat.length;
+        int col = mat[0].length;
+
+        int left = 0;
+        int top = 0;
+        int right = col - 1;
+        int bottom = row - 1;
+
+        var list = new ArrayList<Integer>();
+
+        while (left <= right && top <= bottom) {
+            // right
+            for (int i = left; i <= right; i++) {
+                list.add(mat[top][i]);
+            }
+            top++;
+            // bottom
+            for (int i = top; i <= bottom; i++) {
+                list.add(mat[i][right]);
+            }
+            right--;
+            // left
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    list.add(mat[bottom][i]);
+                }
+                bottom--;
+            }
+            // top
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    list.add(mat[i][left]);
+                }
+                left++;
+            }
+        }
+
+        System.out.println(list);
 
     }
 
-
     // print a matrix
-    public static void print(int[][] mat, int n){
-        for(int i=0; i<mat.length;i++){
-            for(int j=0; j<mat[i].length; j++){
+    public static void print(int[][] mat, int n) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[i].length; j++) {
                 System.out.print(mat[i][j] + " ");
             }
             System.out.println();
@@ -812,8 +855,9 @@ public class Array {
         }
     }
 
-    // converting a lower case string to the capital case string without usning any inbuild function
-     
+    // converting a lower case string to the capital case string without usning any
+    // inbuild function
+
     // A - Z = 65 - 90
     // a - z = 97 - 122
     // space = 32
@@ -822,12 +866,12 @@ public class Array {
     // 97 - 65 = 32
     // 98 - 66 = 32
 
-    public static String toCapital(String s){
+    public static String toCapital(String s) {
         StringBuilder sb = new StringBuilder(s);
-        for(int i=0; i<s.length(); i++){
+        for (int i = 0; i < s.length(); i++) {
             char curr = s.charAt(i);
-            if(curr>='a' && curr<='z'){
-                sb.setCharAt(i, (char)(curr - ' '));
+            if (curr >= 'a' && curr <= 'z') {
+                sb.setCharAt(i, (char) (curr - ' '));
             }
         }
         return String.valueOf(sb);
@@ -909,14 +953,15 @@ public class Array {
         // System.out.println(maxSubArray(new int[]{-2,-3,4,-1,-2,1,5,-3}));
 
         // best time to buy and sell stock
-        // System.out.println( "the max profit is: " + profitToBuyAndSellStock(new int[] {7,1,5,3,6}));
+        // System.out.println( "the max profit is: " + profitToBuyAndSellStock(new int[]
+        // {7,1,5,3,6}));
 
         // rearrange by sign (if number of +ve == -ve)
         // var arr = new int[] { 3, 1, -2, -5, 2, -4 };
         // var res = rearrangeBySign(arr);
         // print(res, 0);
-        
-        //rearrange by sign in general
+
+        // rearrange by sign in general
         // var arr = new int[] { 3, 1, -2, -5, 2, -4, 112, 10};
         // rearrangeBySign(arr, arr.length);
         // print(arr,0);
@@ -936,10 +981,10 @@ public class Array {
 
         // set the matrix to zeros
         // var mat = new int[][]{
-        //     {1,1,1,1},
-        //     {1,0,0,1},
-        //     {1,1,0,1},
-        //     {1,1,1,1}
+        // {1,1,1,1},
+        // {1,0,0,1},
+        // {1,1,0,1},
+        // {1,1,1,1}
         // };
         // setMatrixToZeros(mat);
         // print(mat, 0);
@@ -949,15 +994,26 @@ public class Array {
 
         // rotate90 an matrix by 90 degree
 
-        var mat = new int[][]{
-            {1,2,3,4},
-            {5,6,7,8},
-            {9,10,11,12},
-            {13,14,15,16}
-        };
+        // var mat = new int[][] {
+        //         { 1, 2, 3, 4 },
+        //         { 5, 6, 7, 8 },
+        //         { 9, 10, 11, 12 },
+        //         { 13, 14, 15, 16 }
+        // };
 
-        rotate90(mat, null);
-        print(mat, 0);
+        // rotate90(mat, null);
+        // print(mat, 0);
+
+        // print matrix in the spiral way
+        var mat = new int[][]{
+            {1,2,3,4,5,6},
+            {20,21,22,23,24,7},
+            {19,32,33,34,25,8},
+            {18,31,26,35,26,9},
+            {17,30,29,28,27,10},
+            {16,15,14,13,12,11}
+        };
+        printSpital(mat);
 
     }
 }
