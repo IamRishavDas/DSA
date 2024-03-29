@@ -1,3 +1,5 @@
+package DSA.Arrays;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -785,6 +787,11 @@ public class Array {
     public static void rotate90(int[][] mat, String s){
         transpose(mat);
         reverseEveryRow(mat);
+    }
+
+    // print matrix in spiral order
+    public static void printSpital(int[][] mat){
+
     }
 
 

@@ -1,3 +1,5 @@
+package DSA.Patterns;
+
 public class Pattern {
     public void pattern1(int n) {
         for (int i = 1; i <= n; i++) {

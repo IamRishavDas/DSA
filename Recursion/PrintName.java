@@ -1,3 +1,5 @@
+package DSA.Recursion;
+
 public class PrintName{
     // print linerly from 1 to N
     static void print(int i, int n){

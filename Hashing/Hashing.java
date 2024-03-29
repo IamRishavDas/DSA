@@ -1,3 +1,5 @@
+package DSA.Hashing;
+
 import java.util.HashMap;
 
 public class Hashing {
