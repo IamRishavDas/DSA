@@ -838,6 +838,23 @@ public class Array {
 
     }
 
+    // find the number of subarrays with the given sum k
+    public static int subArrayWithSum(int[] arr, int k){
+        int count = 0;
+        int prefixSum = 0;
+        var map = new HashMap<Integer, Integer>();
+        map.put(0, 1);
+
+        for(int i=0; i<arr.length; i++){
+            prefixSum += arr[i];
+            int remaining = prefixSum - k;
+            count += map.getOrDefault(remaining, 0);
+            map.put(prefixSum, map.getOrDefault(prefixSum, 0)+1);
+        }
+
+        return count;
+    }
+
     // print a matrix
     public static void print(int[][] mat, int n) {
         for (int i = 0; i < mat.length; i++) {
@@ -1005,15 +1022,20 @@ public class Array {
         // print(mat, 0);
 
         // print matrix in the spiral way
-        var mat = new int[][]{
-            {1,2,3,4,5,6},
-            {20,21,22,23,24,7},
-            {19,32,33,34,25,8},
-            {18,31,26,35,26,9},
-            {17,30,29,28,27,10},
-            {16,15,14,13,12,11}
-        };
-        printSpital(mat);
+        // var mat = new int[][]{
+        //     {1,2,3,4,5,6},
+        //     {20,21,22,23,24,7},
+        //     {19,32,33,34,25,8},
+        //     {18,31,26,35,26,9},
+        //     {17,30,29,28,27,10},
+        //     {16,15,14,13,12,11}
+        // };
+        // printSpital(mat);
+
+        // find the number of subarrays with the given sum k
+        int[] arr = {1,2,3,-3,1,1,1,4,2,-3};
+        int k = 3;
+        System.out.println("the number of subarrays with sum " + k + "is: " + subArrayWithSum(arr, k));
 
     }
 }
