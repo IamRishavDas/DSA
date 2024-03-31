@@ -1010,7 +1010,6 @@ public class Array {
         // System.out.println(toCapital("kl;j34$"));
 
         // rotate90 an matrix by 90 degree
-
         // var mat = new int[][] {
         //         { 1, 2, 3, 4 },
         //         { 5, 6, 7, 8 },
@@ -1033,9 +1032,10 @@ public class Array {
         // printSpital(mat);
 
         // find the number of subarrays with the given sum k
-        int[] arr = {1,2,3,-3,1,1,1,4,2,-3};
-        int k = 3;
-        System.out.println("the number of subarrays with sum " + k + "is: " + subArrayWithSum(arr, k));
+        // int[] arr = {1,2,3,-3,1,1,1,4,2,-3};
+        // int k = 3;
+        // System.out.println("the number of subarrays with sum " + k + "is: " + subArrayWithSum(arr, k));
+
 
     }
 }
