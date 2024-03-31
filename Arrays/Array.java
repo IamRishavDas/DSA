@@ -855,6 +855,30 @@ public class Array {
         return count;
     }
 
+    // calculating the nCr function
+    public static int nCr(int n, int r){
+        int result = 1;
+        for(int i=0; i<r; i++){
+            result *= (n-i);
+            result /= (i+1);
+        }
+        return result;
+    }
+
+    // pascals triangle
+    public static List<List<Integer>> pascalsTriangle(int rows){
+        List<Integer> list;
+        List<List<Integer>> listOfList = new ArrayList<>();
+        for(int row=1; row<=rows; row++){
+            list = new ArrayList<>();
+            for(int col=1; col<=row; col++){
+                list.add(nCr(row-1, col-1));
+            }
+            listOfList.add(list);
+        }
+        return listOfList;
+    }
+
     // print a matrix
     public static void print(int[][] mat, int n) {
         for (int i = 0; i < mat.length; i++) {
@@ -1036,6 +1060,8 @@ public class Array {
         // int k = 3;
         // System.out.println("the number of subarrays with sum " + k + "is: " + subArrayWithSum(arr, k));
 
+        // printing the pascals triangle
+        // System.out.println(pascalsTriangle(5));
 
     }
 }
