@@ -2,6 +2,9 @@ package DSA.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -839,44 +842,117 @@ public class Array {
     }
 
     // find the number of subarrays with the given sum k
-    public static int subArrayWithSum(int[] arr, int k){
+    public static int subArrayWithSum(int[] arr, int k) {
         int count = 0;
         int prefixSum = 0;
         var map = new HashMap<Integer, Integer>();
         map.put(0, 1);
 
-        for(int i=0; i<arr.length; i++){
+        for (int i = 0; i < arr.length; i++) {
             prefixSum += arr[i];
             int remaining = prefixSum - k;
             count += map.getOrDefault(remaining, 0);
-            map.put(prefixSum, map.getOrDefault(prefixSum, 0)+1);
+            map.put(prefixSum, map.getOrDefault(prefixSum, 0) + 1);
         }
 
         return count;
     }
 
     // calculating the nCr function
-    public static int nCr(int n, int r){
+    public static int nCr(int n, int r) {
         int result = 1;
-        for(int i=0; i<r; i++){
-            result *= (n-i);
-            result /= (i+1);
+        for (int i = 0; i < r; i++) {
+            result *= (n - i);
+            result /= (i + 1);
         }
         return result;
     }
 
     // pascals triangle
-    public static List<List<Integer>> pascalsTriangle(int rows){
+    public static List<List<Integer>> pascalsTriangle(int rows) {
         List<Integer> list;
         List<List<Integer>> listOfList = new ArrayList<>();
-        for(int row=1; row<=rows; row++){
+        for (int row = 1; row <= rows; row++) {
             list = new ArrayList<>();
-            for(int col=1; col<=row; col++){
-                list.add(nCr(row-1, col-1));
+            for (int col = 1; col <= row; col++) {
+                list.add(nCr(row - 1, col - 1));
             }
             listOfList.add(list);
         }
         return listOfList;
+    }
+
+    // majority elemenet appearing more than [n/3] three times (brute force
+    // solution)
+    public static List<Integer> majorityElement(int[] arr) {
+        int n = arr.length;
+        List<Integer> res = new ArrayList<>(2);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : arr) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        for (Entry<Integer, Integer> i : map.entrySet()) {
+            if (i.getValue() > (n / 3)) {
+                res.add(i.getKey());
+                if (res.size() == 2)
+                    break;
+            }
+        }
+        return res;
+    }
+
+    // majority elemenet appearing more than [n/3] three times (brute force
+    // solution)
+    public static List<Integer> majorityElementMorethanNdividedBy3(int[] arr) {
+        int n = arr.length;
+
+        if(n==1){
+            return Arrays.asList(arr[0]);
+        }
+
+        int count1 = 0, count2 = 0;
+        int elemenet1 = 1, elemenet2 = 1;
+
+        List<Integer> list = new ArrayList<>(2);
+
+        for (int i = 0; i < n; i++) {
+            if (count1 == 0 && elemenet2 != arr[i]) {
+                count1 = 1;
+                elemenet1 = arr[i];
+            } else if (count2 == 0 && elemenet1 != arr[i]) {
+                count2 = 1;
+                elemenet2 = arr[i];
+            }
+
+            else if (arr[i] == elemenet1)
+                count1++;
+
+            else if (arr[i] == elemenet2)
+                count2++;
+            else {
+                count1--;
+                count2--;
+            }
+        }
+
+        // checking if the elemenets has the count of greater than [n/3]
+        count1 = 0;
+        count2 = 0;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == elemenet1) {
+                count1++;
+            }
+            if (arr[i] == elemenet2) {
+                count2++;
+            }
+        }
+
+        if (count1 > n / 3)
+            list.add(elemenet1);
+        if (count2 > n / 3)
+            list.add(elemenet2);
+
+        return list;
     }
 
     // print a matrix
@@ -1035,10 +1111,10 @@ public class Array {
 
         // rotate90 an matrix by 90 degree
         // var mat = new int[][] {
-        //         { 1, 2, 3, 4 },
-        //         { 5, 6, 7, 8 },
-        //         { 9, 10, 11, 12 },
-        //         { 13, 14, 15, 16 }
+        // { 1, 2, 3, 4 },
+        // { 5, 6, 7, 8 },
+        // { 9, 10, 11, 12 },
+        // { 13, 14, 15, 16 }
         // };
 
         // rotate90(mat, null);
@@ -1046,22 +1122,28 @@ public class Array {
 
         // print matrix in the spiral way
         // var mat = new int[][]{
-        //     {1,2,3,4,5,6},
-        //     {20,21,22,23,24,7},
-        //     {19,32,33,34,25,8},
-        //     {18,31,26,35,26,9},
-        //     {17,30,29,28,27,10},
-        //     {16,15,14,13,12,11}
+        // {1,2,3,4,5,6},
+        // {20,21,22,23,24,7},
+        // {19,32,33,34,25,8},
+        // {18,31,26,35,26,9},
+        // {17,30,29,28,27,10},
+        // {16,15,14,13,12,11}
         // };
         // printSpital(mat);
 
         // find the number of subarrays with the given sum k
         // int[] arr = {1,2,3,-3,1,1,1,4,2,-3};
         // int k = 3;
-        // System.out.println("the number of subarrays with sum " + k + "is: " + subArrayWithSum(arr, k));
+        // System.out.println("the number of subarrays with sum " + k + "is: " +
+        // subArrayWithSum(arr, k));
 
         // printing the pascals triangle
         // System.out.println(pascalsTriangle(5));
+
+        // find the majority elements appearing greater than [n/3]
+        var arr = new int[] { 1, 1, 1, 3, 3, 2, 2, 2 };
+        // System.out.println(majorityElement(arr));
+        System.out.println(majorityElementMorethanNdividedBy3(arr));
 
     }
 }
