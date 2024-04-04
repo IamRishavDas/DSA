@@ -955,6 +955,43 @@ public class Array {
         return list;
     }
 
+    // 3 sum problem finding the triplet sum = 0 (brute force solution)
+    public static List<List<Integer>> threeSum(int[] arr){
+        int n = arr.length;
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                for(int k=j+1; k<n; k++){
+                    if(arr[i] + arr[j] + arr[k] == 0){
+                        List<Integer> list = Arrays.asList(arr[i], arr[j], arr[k]);
+                        Collections.sort(list);
+                        if(!res.contains(list))
+                            res.add(list);
+                    }
+                }
+            }
+        }
+        return res;
+    } 
+
+    // 3 sum problem finding the triplet with sum = 0 (better solution)
+    public static List<List<Integer>> threeSum(int[] arr, int n){
+        var res = new ArrayList<List<Integer>>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                int required = -(arr[i] + arr[j]);
+                if(map.containsKey(required) && map.get(required) != i && map.get(required) != j){
+                    List<Integer> list = Arrays.asList(arr[i], arr[j], required);
+                    Collections.sort(list);
+                    if(!res.contains(list)) res.add(list);
+                }
+                map.put(arr[j], j);
+            }
+        }
+        return res;
+    }
+
     // print a matrix
     public static void print(int[][] mat, int n) {
         for (int i = 0; i < mat.length; i++) {
@@ -1141,9 +1178,13 @@ public class Array {
         // System.out.println(pascalsTriangle(5));
 
         // find the majority elements appearing greater than [n/3]
-        var arr = new int[] { 1, 1, 1, 3, 3, 2, 2, 2 };
-        // System.out.println(majorityElement(arr));
-        System.out.println(majorityElementMorethanNdividedBy3(arr));
+        // var arr = new int[] { 1, 1, 1, 3, 3, 2, 2, 2 };
+        // // System.out.println(majorityElement(arr));
+        // System.out.println(majorityElementMorethanNdividedBy3(arr));
+
+        // finding the triplet with sum 0 (three sum problem)
+        int[] arr = {-1, 0, 1, 2, -1, -4};
+        System.out.println(threeSum(arr/* , arr.length */));
 
     }
 }
