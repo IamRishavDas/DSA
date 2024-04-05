@@ -993,7 +993,6 @@ public class Array {
     }
 
     public static List<List<Integer>> threeSum(int[] arr, int n, String optimal){
-        int n = arr.length;
         Arrays.sort(arr);
         List<List<Integer>> list = new ArrayList<>();
         for(int i=0; i<n; i++){
@@ -1003,7 +1002,7 @@ public class Array {
             while(j<k){
                 int sum = arr[i] + arr[j] + arr[k];
                 if(sum < 0){
-                    j++
+                    j++;
                 } else if(sum > 0){
                     k--;
                 } else if(sum == 0){
@@ -1210,7 +1209,7 @@ public class Array {
 
         // finding the triplet with sum 0 (three sum problem)
         int[] arr = {-1, 0, 1, 2, -1, -4};
-        System.out.println(threeSum(arr/* , arr.length */));
+        System.out.println(threeSum(arr, arr.length, "optimal"));
 
     }
 }
