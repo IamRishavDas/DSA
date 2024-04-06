@@ -992,11 +992,12 @@ public class Array {
         return res;
     }
 
+    // three sum problem optimal solution using three pointer approach
     public static List<List<Integer>> threeSum(int[] arr, int n, String optimal){
         Arrays.sort(arr);
         List<List<Integer>> list = new ArrayList<>();
         for(int i=0; i<n; i++){
-            if(i>0 && arr[i] == arr[i-1]) i++;
+            if(i>0 && arr[i] == arr[i-1]) continue;
             int j = i+1;
             int k = n-1;
             while(j<k){
@@ -1208,8 +1209,8 @@ public class Array {
         // System.out.println(majorityElementMorethanNdividedBy3(arr));
 
         // finding the triplet with sum 0 (three sum problem)
-        int[] arr = {-1, 0, 1, 2, -1, -4};
-        System.out.println(threeSum(arr, arr.length, "optimal"));
+        // int[] arr = {-1, 0, 1, 2, -1, -4};
+        // System.out.println(threeSum(arr, arr.length, "optimal"));
 
     }
 }
