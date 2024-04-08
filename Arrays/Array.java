@@ -1018,6 +1018,80 @@ public class Array {
         return list;
     }
 
+    // four sum problem: finding the unique quarts sum equals to target (Brute force solution)
+    public static List<List<Integer>> fourSum(int[] arr, int target){
+        List<List<Integer>> list = new ArrayList<>();
+        int n = arr.length;
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                for(int k=j+1; k<n; k++){
+                    for(int l=k+1; l<n; l++){
+                        if(arr[i] + arr[j] + arr[k] + arr[l] == target){
+                            var temp = Arrays.asList(arr[i], arr[j], arr[k], arr[l]);
+                            Collections.sort(temp);
+                            if(!list.contains(temp)){
+                                list.add(temp);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    // four sum problem: better solution (O(n^3))
+    public static List<List<Integer>> fourSum(int[] arr, int target, int n){
+        List<List<Integer>> list = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                for(int k=j+1; k<n; k++){
+                    int req = target - (arr[i] + arr[j] + arr[k]);
+                    if(map.containsKey(req) && map.get(req) != i && map.get(req) != j && map.get(req) != k){
+                        var temp = Arrays.asList(arr[i], arr[j], arr[k], req);
+                        Collections.sort(temp);
+                        if(!list.contains(temp)){
+                            list.add(temp);
+                        }
+                    }
+                    map.put(arr[k], k);
+                }
+            }
+        }
+        return list;
+    }
+
+    // four sum: optimal solution
+    public static List<List<Integer>> fourSum(int[] arr, int target, String optimal){
+        List<List<Integer>> list = new ArrayList<>();
+        int n = arr.length;
+        Arrays.sort(arr);
+        for(int i=0; i<n; i++){
+            if(i>0 && arr[i] == arr[i-1]) continue;
+            for(int j=(i+1); j<n; j++){
+                if(j != (i+1) && arr[j] == arr[j-1]) continue;
+                int k = j+1;
+                int l = n-1;
+                while(k<l){
+                    int sum = arr[i] + arr[j] + arr[k] + arr[l];
+                    if(sum < target){
+                        k++;
+                    } else if(sum > target){
+                        l--;
+                    } else if(sum == target){
+                        list.add(Arrays.asList(arr[i], arr[j], arr[k], arr[l]));
+                        k++;
+                        l--;
+                        while(k<l && arr[k] == arr[k-1]) k++;
+                        while(k<l && arr[l] == arr[l+1]) l--;
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
     // print a matrix
     public static void print(int[][] mat, int n) {
         for (int i = 0; i < mat.length; i++) {
@@ -1212,5 +1286,9 @@ public class Array {
         // int[] arr = {-1, 0, 1, 2, -1, -4};
         // System.out.println(threeSum(arr, arr.length, "optimal"));
 
+        // 4 sum problem: finding the quarts equals to the sum = target
+        int[] arr = {1, 0, -1, 0, -2, 2};
+        // System.out.println(fourSum(arr, 0, arr.length));
+        System.out.println(fourSum(arr, 0, "optimal"));
     }
 }
