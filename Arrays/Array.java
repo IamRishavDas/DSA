@@ -1092,6 +1092,44 @@ public class Array {
         return list;
     }
 
+    // finding the number of subarrays with xor k (better)
+    public static int subArrayWithXorK(int[] arr, int xor){
+        int n = arr.length;
+        int count = 0;
+        for(int i=0; i<n; i++){
+            int result_xor = 0;
+            for(int j=i; j<n; j++){
+                result_xor ^= arr[j];
+                if(result_xor == xor){
+                    // print(arr, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // finding the number of subarray with xor k (optimal)
+    public static int subArrayWithXorK(int[] arr, int xor, String optimal){
+        int n = arr.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int result_xor = 0;
+        int count = 0;
+        for(int i=0; i<n; i++){
+            result_xor ^= arr[i];
+            count += map.getOrDefault((result_xor ^ xor), 0);
+            map.put(result_xor, map.getOrDefault(result_xor, 0)+1);
+        } 
+        return count;
+    }
+
+    // print an array form start to end index as given
+    public static void print(int[] arr, int start, int end){
+        for(int i=start; i<=end; i++) System.out.print(arr[i] + " ");
+        System.out.println();
+    }
+
     // print a matrix
     public static void print(int[][] mat, int n) {
         for (int i = 0; i < mat.length; i++) {
@@ -1287,8 +1325,13 @@ public class Array {
         // System.out.println(threeSum(arr, arr.length, "optimal"));
 
         // 4 sum problem: finding the quarts equals to the sum = target
-        int[] arr = {1, 0, -1, 0, -2, 2};
+        // int[] arr = {1, 0, -1, 0, -2, 2};
         // System.out.println(fourSum(arr, 0, arr.length));
-        System.out.println(fourSum(arr, 0, "optimal"));
+        // System.out.println(fourSum(arr, 0, "optimal"));
+
+        // count the number of sub arrays with xor k
+        int[] arr = {4, 2, 2, 6, 4};
+        System.out.println("the number of subarrays with xor k is: " + subArrayWithXorK(arr, 6, "optimal"));
+
     }
 }
