@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.util.Set;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Array {
 
@@ -1124,6 +1125,48 @@ public class Array {
         return count;
     }
 
+    // merge overlapping sequence (brute force solution) time -> O(nlogn) + O(2n)
+    public static int[][] mergeOverlappingSubIntervals(int[][] intervals){
+        int n = intervals.length;
+        List<int[]> ans = new ArrayList<>();
+        
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        for(int i=0; i<n; i++){
+            int start = intervals[i][0];
+            int end   = intervals[i][1];
+            if(!ans.isEmpty() && end <= ans.getLast()[1]){
+                continue;
+            }
+
+            for(int j=i+1; j<n; j++){
+                if(intervals[j][0] <= end){
+                    end = Math.max(end, intervals[j][1]);
+                } else {
+                    break;
+                }
+            }
+            ans.add(new int[]{start, end});
+        }
+        return ans.toArray(new int[ans.size()][]);
+    }
+
+    public static int[][] mergeOverlappingSubIntervals(int[][] intervals, int n){
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+        n = intervals.length;
+        List<int[]> list = new ArrayList<>();
+
+        for(int i=0; i<n; i++){
+            if(list.isEmpty() || intervals[i][0] > list.getLast()[1]){
+                list.add(intervals[i]);
+            } else {
+                list.getLast()[1] = Math.max(list.getLast()[1], intervals[i][1]);
+            }
+        }
+        return list.toArray(new int[list.size()][]);
+    }
+
+
     // print an array form start to end index as given
     public static void print(int[] arr, int start, int end){
         for(int i=start; i<=end; i++) System.out.print(arr[i] + " ");
@@ -1330,8 +1373,20 @@ public class Array {
         // System.out.println(fourSum(arr, 0, "optimal"));
 
         // count the number of sub arrays with xor k
-        int[] arr = {4, 2, 2, 6, 4};
-        System.out.println("the number of subarrays with xor k is: " + subArrayWithXorK(arr, 6, "optimal"));
+        // int[] arr = {4, 2, 2, 6, 4};
+        // System.out.println("the number of subarrays with xor k is: " + subArrayWithXorK(arr, 6, "optimal"));
 
+        int[][] intervals = {
+            {1,3},
+            {2,6},
+            {8,9},
+            {9,11},
+            {8,10},
+            {2,4},
+            {15,18},
+            {16,17}
+        };
+        // print(mergeOverlappingSubIntervals(intervals), 0);
+        print(mergeOverlappingSubIntervals(intervals, intervals.length), 0);
     }
 }
