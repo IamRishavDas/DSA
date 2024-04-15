@@ -1149,6 +1149,7 @@ public class Array {
         return ans.toArray(new int[ans.size()][]);
     }
 
+    // merge overlapping subintervals (optimal approach)
     public static int[][] mergeOverlappingSubIntervals(int[][] intervals, int n){
         Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
         n = intervals.length;
@@ -1162,6 +1163,69 @@ public class Array {
             }
         }
         return list.toArray(new int[list.size()][]);
+    }
+
+
+    // merge two sorted array
+    public static void merge(int[] arr1, int m, int[] arr2, int n){
+        for(int i=m; i<(m+n); i++) arr1[i] = arr2[i-m];
+        Arrays.sort(arr1);
+    }
+
+
+    // merge two sorted array with using extra temp space 
+    public static void merge(int[] arr1, int m, int[] arr2){
+        int i = 0; 
+        int j = 0; 
+        int k = 0;
+        var temp = new int[arr1.length + arr2.length];
+        while(i< arr1.length && j<arr2.length){
+            if(arr1[i] < arr2[j]) temp[k++] = arr1[i++];
+            else temp[k++] = arr2[j++];
+        } 
+
+        while(i<arr1.length){
+            temp[k++] = arr1[i++];
+        }
+
+        while(j<arr2.length){
+            temp[k++] = arr2[j++];
+        }
+
+        for(int index = 0; index<temp.length; index++){
+            arr1[index] = temp[index];
+        }
+        return;
+    }
+
+    // mergee two sorted array optimal approach
+    public static void merge(int[] arr1, int[] arr2, String optimal_1){
+        if(arr2.length == 0) return;
+        int i = arr1.length - 1;
+        int j = 0;
+        
+        while(i>=0 && j<arr2.length){
+            if(arr1[i] > arr2[j]){
+                swap(arr1, arr2, i, j);
+                i--;
+                j++;
+            } else {
+                break;
+            }
+        }
+
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        Arrays.copyOf(arr1, arr1.length + arr2.length);
+        for(int index=arr2.length; index<arr1.length; index++){
+            arr1[index] = arr2[index - arr2.length];
+        }
+    }
+
+    private static void swap(int[] arr1, int[] arr2, int i, int j){
+        int temp = arr1[i];
+        arr1[i]  = arr2[j];
+        arr2[j]  = temp;
     }
 
 
@@ -1374,17 +1438,25 @@ public class Array {
         // int[] arr = {4, 2, 2, 6, 4};
         // System.out.println("the number of subarrays with xor k is: " + subArrayWithXorK(arr, 6, "optimal"));
 
-        int[][] intervals = {
-            {1,3},
-            {2,6},
-            {8,9},
-            {9,11},
-            {8,10},
-            {2,4},
-            {15,18},
-            {16,17}
-        };
-        // print(mergeOverlappingSubIntervals(intervals), 0);
-        print(mergeOverlappingSubIntervals(intervals, intervals.length), 0);
+        // int[][] intervals = {
+        //     {1,3},
+        //     {2,6},
+        //     {8,9},
+        //     {9,11},
+        //     {8,10},
+        //     {2,4},
+        //     {15,18},
+        //     {16,17}
+        // };
+        // // print(mergeOverlappingSubIntervals(intervals), 0);
+        // print(mergeOverlappingSubIntervals(intervals, intervals.length), 0);
+
+        // merge two sorted arrays
+        // int[] arr1 = {1, 3, 5, 7/*, 0, 0, 0, 0, 0**/};
+        // int[] arr2 = {0, 2, 6, 8, 9};
+        // // merge(arr1, 4, arr2, arr2.length);
+        // // merge(arr1, 4, arr2);
+        // merge(arr1, arr2, "optimal-1");
+        // print(arr1, 0);
     }
 }
