@@ -1228,6 +1228,118 @@ public class Array {
         arr2[j]  = temp;
     }
 
+    // find out the missing and the repeating and missing number (brute force solution = O(n^2))
+    public static List<Integer> findRepeatingAndMissing(int[] arr){
+        int n = arr.length;
+        
+        int repeating = Integer.MIN_VALUE;
+        int missing = Integer.MIN_VALUE;
+        for(int i=0; i<n; i++){
+            int count = 0;
+            for(int j: arr){
+                if(i == j) count++;
+            }
+            if(count > 1) repeating = i; // repeating
+            else if(count == 0) missing = i; // missing
+        }
+        return Arrays.asList(repeating, missing);
+    }   
+
+    // find the repeating and the missing element in an array (better solution - O(2n) space complexity - O(n+1))
+    public static List<Integer> findRepeatingAndMissing(int[] arr, int n){
+        int[] hashArray = new int[n + 1];
+        int missing = Integer.MIN_VALUE;
+        int repeating = Integer.MIN_VALUE;
+
+        for(int i=0; i<n; i++){
+            hashArray[arr[i]] = hashArray[arr[i]] + 1;
+        }
+        for(int i=0; i<n; i++){
+            if(hashArray[i] == 0) missing = i;
+            else if(hashArray[i] == 2) repeating = i;
+        }
+
+        return Arrays.asList(repeating, missing);
+       
+    } 
+
+    // find the repeating and the missing number in an array (optimal solution-1 using the math formula)
+    public static List<Integer> findRepeatingAndMissing(int[] arr, int n, String optimal){
+
+        // we have to form two equations
+        // s1 - s1n
+        // s2 - s2n
+
+        long s1 = 0;
+        long s2 = 0;
+
+        long s1n = (n * (n+1)) /2;
+        long s2n = (n * (n+1) * (2*n + 1) )/6;
+
+        for(int i=0; i<n; i++){
+            s1 += arr[i];
+            s2 += Math.pow(arr[i], 2);
+        }
+
+        int val1 = (int)(s1 - s1n); // repeating - missing
+        int val2 = (int)(s2 - s2n); 
+        val2 = val2 / val1;         // repeating + missing
+
+        int repeating = (val1 + val2) / 2;
+        int missing   = (val2 - repeating);
+        
+        return Arrays.asList(repeating, missing);
+
+    }
+
+    // finding the repeating and the missing number (optimal - 2 using xor  )
+    public static List<Integer> findRepeatingAndMissing(int[] arr, int n, String optimal, int o){
+        int xor = 0;
+        for(int i=0; i<n; i++){
+            xor ^= arr[i];
+            xor ^= (i+1);
+        }
+
+        // find the diff bit no in the xor of the two series
+        int bitNo = 0;
+        while(true){
+            if((xor & (1 << bitNo)) != 0){ // using bit wise and operation and the left shift operatoin to find the diff bit position
+                break;
+            }
+            bitNo++;
+        }
+
+        int one = 0;
+        int zero = 0;
+
+        for(int i=0; i<n; i++){
+            // cheking for one or zero in the given array
+            if((arr[i] & (1 << bitNo)) != 0){ // part of one
+                one ^= arr[i];
+            } else { // part of zero
+                zero ^= arr[i];
+            }
+            
+            // cheking for one or zero in the array of 1 to n
+            if((((i+1) & (1<<bitNo)) != 0)){ // part of one
+                one ^= (i+1);
+            } else { // part of zero
+                zero ^= (i+1);
+            }
+        }
+
+        int count = 0;
+        for(int i=0; i<n; i++){
+            if(arr[i] == zero) count++;
+        }
+
+        if(count == 2) return Arrays.asList(zero, one);
+        else return Arrays.asList(one, zero);
+
+    }
+
+
+
 
     // print an array form start to end index as given
     public static void print(int[] arr, int start, int end){
@@ -1458,5 +1570,11 @@ public class Array {
         // // merge(arr1, 4, arr2);
         // merge(arr1, arr2, "optimal-1");
         // print(arr1, 0);
+
+        // find out the repeating and the missing number
+        int[] arr = {4,3,6,2,1,1};
+        // System.out.println(findRepeatingAndMissing(arr));
+        // System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using maths")); 
+        System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using xor", 0));
     }
 }
