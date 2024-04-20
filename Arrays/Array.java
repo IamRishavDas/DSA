@@ -1339,6 +1339,78 @@ public class Array {
     }
 
 
+    // count inversion: find out all the pairs where for i<j and array[i] < array[j]
+    public static int countInversion(int[] arr){
+
+        // List<List<Integer>> list = new ArrayList<>();
+
+        int n = arr.length;
+        int count = 0; 
+
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                if(i < j && arr[i] > arr[j]){
+                    // list.add(Arrays.asList(arr[i], arr[j]));
+                    count++;
+                }
+            }
+        }
+
+        // System.out.println(list);
+        return count;
+    }
+
+
+    // merge sort snippet
+    public static int mergeSort(int[] arr, int low, int high){
+        int count = 0;
+        if(low >= high) return count;
+        int mid= (low+high)/2;
+        count += mergeSort(arr, low, mid);
+        count += mergeSort(arr, mid+1, high);
+        count += merge(arr, low, mid, high);
+        return count;
+    }
+
+    private static int merge(int[] arr, int low, int mid, int high) {
+        int left = low;
+        int right = mid+1;
+        int index = low;
+        int[] temp = new int[high+1];
+
+        int count = 0;
+
+        while(left<= mid && right <= high){
+            if(arr[left] <= arr[right]){ // left is smaller
+                temp[index++] = arr[left++]; 
+            } else { // right is smaller
+                // System.out.println(arr[left] + "," +arr[right]);
+                temp[index++] = arr[right++];
+                count += mid - left + 1; // this will track the count of the all pairs
+            }
+        }
+
+        while(left <= mid){
+            temp[index++] = arr[left++];
+        }
+
+        while(right<= high){
+            temp[index++] = arr[right++];
+        }
+
+        for(int i=low; i<=high; i++){
+            arr[i] = temp[i];   
+        }
+
+        return count;
+    }
+
+
+    // count inversion: optimal solution using merge sort
+    public static int countInversion(int[] arr, int n){
+        n = arr.length;
+        return mergeSort(arr, 0, n-1);
+    }
 
 
     // print an array form start to end index as given
@@ -1572,9 +1644,13 @@ public class Array {
         // print(arr1, 0);
 
         // find out the repeating and the missing number
-        int[] arr = {4,3,6,2,1,1};
+        // int[] arr = {4,3,6,2,1,1};
         // System.out.println(findRepeatingAndMissing(arr));
         // System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using maths")); 
-        System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using xor", 0));
+        // System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using xor", 0));
+
+        // count inversion (find the all pair of numbers where for all pairs i<j and array[i] > array[j])
+        int[] arr = {5,3,2,4,1};
+        System.out.println(countInversion(arr, arr.length));
     }
 }

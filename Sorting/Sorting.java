@@ -84,7 +84,7 @@ public class Sorting {
         }
     }
 
-    // merger sort in java
+    // merge sort in java
 
     // recursive algorithm for merge sort
     public static void mergeSort(int[] arr, int low, int high) {
