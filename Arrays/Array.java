@@ -1411,7 +1411,58 @@ public class Array {
         n = arr.length;
         return mergeSort(arr, 0, n-1);
     }
+    
+    
+    // count the reverse pairs where i < j and arr[i] > arr[j] * 2
+    public static int countReversePairs(int[] arr){
+        return mergeSortForReversePairs(arr, 0, arr.length - 1);
+    }
 
+
+    private static int mergeSortForReversePairs(int[] arr, int low, int high) {
+        if(low >= high) return 0;
+        int count = 0;
+        int mid = (low + high) >> 1;
+        count += mergeSortForReversePairs(arr, low, mid);
+        count += mergeSortForReversePairs(arr, mid + 1, high);
+        count += countPairs(arr, low, mid, high);
+        mergeForReversePairs(arr, low, mid, high);
+        return count;
+    }
+
+    private static int countPairs(int[] arr, int low, int mid, int high){
+        int right = mid + 1;
+        int count = 0;
+        for(int i=low; i<=mid; i++){
+            while(right <= high && arr[i] > arr[right] * 2){
+                right++;
+            }
+            count += right - (mid + 1);
+        }
+        return count;
+    }
+
+    private static void mergeForReversePairs(int[] arr, int low, int mid, int high) {
+        int left = low;
+        int right = mid + 1;
+        int index = low;
+        int[] temp = new int[high + 1];
+        while(left <= mid && right <= high){
+            if(arr[left] <= arr[right]) {
+                temp[index++] = arr[left++];
+            } else {
+                temp[index++] = arr[right++];
+            }
+        }
+        while(left <= mid) {
+            temp[index++] = arr[left++];
+        }
+        while(right <= high) {
+            temp[index++] = arr[right++];
+        }
+        for(int i=low; i<=high; i++) arr[i] = temp[i];
+
+    }
 
     // print an array form start to end index as given
     public static void print(int[] arr, int start, int end){
@@ -1650,7 +1701,11 @@ public class Array {
         // System.out.println(findRepeatingAndMissing(arr, arr.length, "optimal using xor", 0));
 
         // count inversion (find the all pair of numbers where for all pairs i<j and array[i] > array[j])
-        int[] arr = {5,3,2,4,1};
-        System.out.println(countInversion(arr, arr.length));
+        // int[] arr = {5,3,2,4,1};
+        // System.out.println(countInversion(arr, arr.length));
+
+        // count the reverse pairs where i < j and arr[i] > arr[j] * 2
+        int[] arr = {40, 25, 19, 12, 9, 6, 2};
+        System.out.println(countReversePairs(arr));
     }
 }
