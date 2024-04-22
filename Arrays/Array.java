@@ -1464,6 +1464,37 @@ public class Array {
 
     }
 
+    // max product sub array (brute force solution: O(n^2))
+    public static int maxProduct(int[] arr){
+        long maxProduct = Integer.MIN_VALUE;
+        int n = arr.length;
+        for(int i=0; i<n; i++){
+            long product = 1;
+            for(int j=i; j<n; j++){
+                product *= arr[j];
+                maxProduct = Math.max(maxProduct, product);
+            }
+        }
+        return (int)maxProduct;
+    }
+
+    // max product subarray (optimal solution: using the observations regarding the problem)
+    public static int maxProduct(int[] arr, int n){
+        long suffix = 1;
+        long prefix = 1;
+        long maxProduct = 1;
+        n = arr.length;
+        for(int i=0; i<n; i++){
+            if(prefix == 0) prefix = 1;
+            if(suffix == 0) suffix = 1;
+            prefix *= arr[i];
+            suffix *= arr[n - i - 1];
+            maxProduct = Math.max(maxProduct, Math.max(prefix, suffix));
+        }
+        return (int)maxProduct;
+    }
+
+
     // print an array form start to end index as given
     public static void print(int[] arr, int start, int end){
         for(int i=start; i<=end; i++) System.out.print(arr[i] + " ");
@@ -1705,7 +1736,13 @@ public class Array {
         // System.out.println(countInversion(arr, arr.length));
 
         // count the reverse pairs where i < j and arr[i] > arr[j] * 2
-        int[] arr = {40, 25, 19, 12, 9, 6, 2};
-        System.out.println(countReversePairs(arr));
+        // int[] arr = {40, 25, 19, 12, 9, 6, 2};
+        // System.out.println(countReversePairs(arr));
+
+        // max product sub array
+        int[] arr = {2,3,-2,4};
+        System.out.println(maxProduct(arr, arr.length));
+
+        
     }
 }
