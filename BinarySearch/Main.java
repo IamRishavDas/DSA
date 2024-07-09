@@ -59,7 +59,7 @@ public class Main {
             int mid = (low + high) >> 1;
             if(arr[mid] >= x){
                 lowerBound = mid;
-                high = mid - 1;
+                high = mid - 1; //search for more smaller index at left
             } else {
                 low = mid + 1;
             }
@@ -155,6 +155,74 @@ public class Main {
         return ans;
     }
 
+    // find the first and last occurance of an element inside an array
+    public static int[] searchRange(int[] arr, int target){ // linear search
+        int firstOccurance, lastOccurance;
+        firstOccurance = lastOccurance = -1;
+
+        for(int i=0; i<arr.length; i++){
+            if(arr[i] == target){
+                if(firstOccurance == -1) firstOccurance = i;
+                lastOccurance = i;
+            }
+        }
+        return new int[]{firstOccurance, lastOccurance};
+    }
+
+    // using the lowerBound and upperBound method
+    public static int[] searchRange(int[] arr, int target, int n){
+        int lowerBound = Main.getLowerBound(arr, target);
+        int upperBound = Main.getUpperBound(arr, target);
+
+        if(lowerBound == n || arr[lowerBound] != target) return new int[]{-1, -1};
+        return new int[] {lowerBound, upperBound-1}; 
+    }
+
+    // using binary search 
+    public static int findFirstIndexUsingBS(int[] arr, int x){
+        int low = 0, high = arr.length-1;
+        int first = -1;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] == x){
+                first = mid;
+                high = mid - 1;
+            } else if(arr[mid] > x){
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return first;
+    }
+
+    public static int findSecondIndexUsingBS(int[] arr, int x){
+        int low = 0, high = arr.length-1;
+        int last = -1;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] == x){
+                last = mid;
+                low = mid + 1;
+            } else if(arr[mid] > x){
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return last;
+    }
+
+    public static int[] searchBound(int[] arr, int x){
+        return new int[] {findFirstIndexUsingBS(arr, x), findSecondIndexUsingBS(arr, x)};
+    }
+
+    // find the number of occurance of an element in an array
+    public static int countOccurance(int[] arr, int x){
+        if(findFirstIndexUsingBS(arr, x) < 0) return 0;
+        else return findFirstIndexUsingBS(arr, x) - findFirstIndexUsingBS(arr, x) + 1;
+    }
+
 
     public static void main(String[] args) {
         // implement Binary Search
@@ -174,8 +242,10 @@ public class Main {
         // System.out.println(getUpperBound(arr, arr.length-1, x));
 
         // find the ceil and floor value in an sorted array
-        int[] arr = {10, 20, 30, 40, 50};
-        System.out.println("Ceil: " + ceilinArray(arr, 25));
-        System.out.println("Floor: " + floorinArray(arr, 25));
+        // int[] arr = {10, 20, 30, 40, 50};
+        // System.out.println("Ceil: " + ceilinArray(arr, 25));
+        // System.out.println("Floor: " + floorinArray(arr, 25));
     }
 }
+
+
