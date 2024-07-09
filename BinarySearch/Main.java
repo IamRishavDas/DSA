@@ -1,5 +1,6 @@
 package DSA.BinarySearch;
 
+
 public class Main {
 
     // implement Binary Search using recursive method
@@ -213,6 +214,7 @@ public class Main {
         return last;
     }
 
+    // search the range
     public static int[] searchBound(int[] arr, int x){
         return new int[] {findFirstIndexUsingBS(arr, x), findSecondIndexUsingBS(arr, x)};
     }
@@ -221,6 +223,23 @@ public class Main {
     public static int countOccurance(int[] arr, int x){
         if(findFirstIndexUsingBS(arr, x) < 0) return 0;
         else return findFirstIndexUsingBS(arr, x) - findFirstIndexUsingBS(arr, x) + 1;
+    }
+
+    // search in rotated sorted array
+    public static int searchInRotatedSortedArray(int[] arr, int x){
+        int low = 0, high = arr.length - 1;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] == x) return mid;
+            else if(arr[low] > arr[mid]){ // if true: right side is sorted
+                if(x <= arr[high] && x >= arr[mid]) low = mid + 1;
+                else high = mid - 1;
+            } else {// left side is sorted
+                if(x <= arr[mid] && x >= arr[low]) high = mid - 1;
+                else low = mid + 1;
+            }
+        }
+        return -1;
     }
 
 
@@ -245,6 +264,9 @@ public class Main {
         // int[] arr = {10, 20, 30, 40, 50};
         // System.out.println("Ceil: " + ceilinArray(arr, 25));
         // System.out.println("Floor: " + floorinArray(arr, 25));
+
+        int[] arr = {7, 8, 9, 1, 2, 3, 4, 5, 6};
+        System.out.println("The search in rotated sorted array is: " + searchInRotatedSortedArray(arr, 1));
     }
 }
 
