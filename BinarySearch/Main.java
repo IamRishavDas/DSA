@@ -225,7 +225,7 @@ public class Main {
         else return findFirstIndexUsingBS(arr, x) - findFirstIndexUsingBS(arr, x) + 1;
     }
 
-    // search in rotated sorted array
+    // search in rotated sorted array (the elements present in the array is unique)
     public static int searchInRotatedSortedArray(int[] arr, int x){
         int low = 0, high = arr.length - 1;
         while(low <= high){
@@ -240,6 +240,48 @@ public class Main {
             }
         }
         return -1;
+    }
+
+    // search in rotated sorted array where the elements present in the array may or may not unique
+    public static boolean searchInRotatedSortedArrayII(int[] arr, int x){
+        int low = 0, high = arr.length - 1;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] == x) return true;
+            else if(arr[low] == arr[mid] && arr[mid] == arr[high]){ // when the sorted half is not figured out
+                low++;
+                high--;
+                continue;
+            }
+            else if(arr[low] > arr[mid]){ // if true: right side is sorted
+                if(x <= arr[high] && x >= arr[mid]) low = mid + 1;
+                else high = mid - 1;
+            } else {// left side is sorted
+                if(x <= arr[mid] && x >= arr[low]) high = mid - 1;
+                else low = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    // find the minimum element is rotated sorted array
+    public static int findMinInRotatedSortedArray(int[] arr){
+        int low = 0, high = arr.length-1, ans = Integer.MAX_VALUE;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            // if the both left and right half is sorted (i.e. the mid is on the rotating point and one sorted half is eleminated)
+            if(arr[low] <= arr[mid] && arr[mid] <= arr[high]){
+               ans = Math.min(ans, arr[low]); 
+            }
+            if(arr[mid] >= arr[low]){ // left half is sorted
+                ans = Math.min(ans, arr[low]);
+                low = mid+1;
+            } else {
+                ans = Math.min(ans, arr[mid]);
+                high = mid-1;
+            }
+        }
+        return ans;
     }
 
 
