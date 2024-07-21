@@ -285,6 +285,56 @@ public class Main {
     }
 
 
+    // find how many times the array has been rotated
+    public static int findHowManyRotationHasDone(int[] arr){
+        int min = Integer.MAX_VALUE, minIndex = -1;
+        int low = 0, high = arr.length-1;
+        while(low <= high){ 
+            int mid = low + (high - low)/2;
+            if(arr[low] <= arr[high]){// if at any point the low high is point at a boundary of an sorted array
+                if(arr[low] < min){
+                    min = arr[low];
+                    minIndex = low;
+                }
+                break;
+            }
+            else if(arr[low] <= arr[mid]){// left side is sorted
+                low = mid+1;
+                if(arr[low] < min){
+                    min = arr[low];
+                    minIndex = low;
+                }
+            } else { // right side is sorted
+                high = mid-1;
+                if(arr[mid] < min){
+                    min = arr[mid];
+                    minIndex = mid;
+                }
+            }
+        }
+        return minIndex;
+    }
+
+    // find the single element in a sorted array
+    public static int getSingleNonDuplicate(int[] arr){
+        int n = arr.length;
+        // handeled all the edge cases
+        if(n == 1) return arr[0];
+        if(arr[0] != arr[1]) return arr[1];
+        if(arr[n-1] != arr[n-2]) return arr[n-1];
+
+        int low = 1, high = n-2;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] != arr[mid-1] && arr[mid] != arr[mid+1]) return arr[mid];
+            //(if the mid is at odd index and pair left is even ) (if the mid is at even index and the right pair is odd)
+            if(((mid%2 == 1) && arr[mid] == arr[mid-1]) && ((mid%2 == 0) && arr[mid] == arr[mid+1])) low = mid+1;
+            else high = mid-1;
+        }
+        return -1; // just for dummy purpose
+    }
+
+
     public static void main(String[] args) {
         // implement Binary Search
         // int[] arr = {1,3,5,6,6};
