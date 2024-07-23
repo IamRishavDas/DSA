@@ -347,9 +347,25 @@ public class Main {
             if(arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1]) return new int[] {mid, arr[mid]};
             else if(arr[mid] > arr[mid-1]) low = mid+1;
             else if(arr[mid] > arr[mid+1]) high = mid-1;
-            else low = mid+1;
+            else low = mid+1; // condition if the mid lies on a reverse peak position
         }
         return new int[]{-1, -1};
+    }
+
+    // find the sqrt of a number using binary search
+    public static int floorFindSqrt(int n){
+        int ans = 1;
+        int low = 1, high = n;
+        while(low<=high){
+            int mid = low + (high - low)/2;
+            if(mid * mid <= n){
+                low = mid+1;
+                ans = mid;
+            } else {
+                high = mid -1;
+            }
+        }
+        return ans;
     }
 
 
