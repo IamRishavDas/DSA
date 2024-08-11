@@ -424,8 +424,30 @@ public class Main {
         return -1;
     }
 
+    // koko eating bananas
     public static int minEatingSpeed(int[] piles, int h) {
-        return 1;
+        int max = arrayMax(piles);
+        for(int i=1; i<max; i++){
+            int rqTime = timeRq(piles, i);
+            if(rqTime <= h) return i;
+        }
+        return -1;
+    }
+
+    public static int arrayMax(int[] piles){
+        int max = Integer.MIN_VALUE;
+        for(int i: piles){
+            max = Math.max(max, i);
+        }
+        return max;
+    }
+
+    public static int timeRq(int[] piles, int i){
+        int time = 0;
+        for(int pile: piles){
+            time += Math.ceil((double)pile/(double)i);
+        }
+        return time;
     }
 
     public static void main(String[] args) {
@@ -461,5 +483,6 @@ public class Main {
         // " value: " + findPeak(arr)[1]);
 
         // System.out.println("the nth root is: " + findNthRoot(3, 27));
+        System.out.println(minEatingSpeed(new int[] {3, 6, 7, 11}, 8));
     }
 }
