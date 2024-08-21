@@ -450,6 +450,44 @@ public class Main {
         return time;
     }
 
+    public static int[] range(int[] weights){
+        int max = Integer.MIN_VALUE, sum = 0;
+        for(int i: weights){
+            max = Math.max(max, i);
+            sum += i;
+        }
+        return new int[] {max, sum};
+    }
+
+    public static boolean possibleShipping(int[] weights, int days, int capacity){
+        int load = 0, dayCount = 1;
+        for(int i=0; i<weights.length; i++){
+            if(load + weights[i] <= capacity){
+                load += weights[i];
+            } else {
+                dayCount++;
+                load = 0;
+                i--;
+            }
+        }
+        return dayCount <= days;
+    }
+
+    public static int shipWithInDays(int[] weights, int days){
+        int[] range = range(weights);
+        int low = range[0], high = range[1], ans = range[1];
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(possibleShipping(weights, days, mid)){
+                ans = mid;
+                high = mid -1;
+            } else {
+                low = mid +1;
+            }
+        }
+        return ans;
+    }
+
     public static void main(String[] args) {
         // implement Binary Search
         // int[] arr = {1,3,5,6,6};
@@ -483,6 +521,9 @@ public class Main {
         // " value: " + findPeak(arr)[1]);
 
         // System.out.println("the nth root is: " + findNthRoot(3, 27));
-        System.out.println(minEatingSpeed(new int[] {3, 6, 7, 11}, 8));
+        // System.out.println(minEatingSpeed(new int[] {3, 6, 7, 11}, 8));
+
+        // capacity to ship packages withing D days
+        System.out.println(possibleShipping(new int[] {1,2,3,4,5,6,7,8,9,10}, 5, 15));
     }
 }
