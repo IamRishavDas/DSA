@@ -427,42 +427,43 @@ public class Main {
     // koko eating bananas
     public static int minEatingSpeed(int[] piles, int h) {
         int max = arrayMax(piles);
-        for(int i=1; i<max; i++){
+        for (int i = 1; i < max; i++) {
             int rqTime = timeRq(piles, i);
-            if(rqTime <= h) return i;
+            if (rqTime <= h)
+                return i;
         }
         return -1;
     }
 
-    public static int arrayMax(int[] piles){
+    public static int arrayMax(int[] piles) {
         int max = Integer.MIN_VALUE;
-        for(int i: piles){
+        for (int i : piles) {
             max = Math.max(max, i);
         }
         return max;
     }
 
-    public static int timeRq(int[] piles, int i){
+    public static int timeRq(int[] piles, int i) {
         int time = 0;
-        for(int pile: piles){
-            time += Math.ceil((double)pile/(double)i);
+        for (int pile : piles) {
+            time += Math.ceil((double) pile / (double) i);
         }
         return time;
     }
 
-    public static int[] range(int[] weights){
+    public static int[] range(int[] weights) {
         int max = Integer.MIN_VALUE, sum = 0;
-        for(int i: weights){
+        for (int i : weights) {
             max = Math.max(max, i);
             sum += i;
         }
-        return new int[] {max, sum};
+        return new int[] { max, sum };
     }
 
-    public static boolean possibleShipping(int[] weights, int days, int capacity){
+    public static boolean possibleShipping(int[] weights, int days, int capacity) {
         int load = 0, dayCount = 1;
-        for(int i=0; i<weights.length; i++){
-            if(load + weights[i] <= capacity){
+        for (int i = 0; i < weights.length; i++) {
+            if (load + weights[i] <= capacity) {
                 load += weights[i];
             } else {
                 dayCount++;
@@ -473,19 +474,44 @@ public class Main {
         return dayCount <= days;
     }
 
-    public static int shipWithInDays(int[] weights, int days){
+    public static int shipWithInDays(int[] weights, int days) {
         int[] range = range(weights);
         int low = range[0], high = range[1], ans = range[1];
-        while(low <= high){
-            int mid = low + (high - low)/2;
-            if(possibleShipping(weights, days, mid)){
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (possibleShipping(weights, days, mid)) {
                 ans = mid;
-                high = mid -1;
+                high = mid - 1;
             } else {
-                low = mid +1;
+                low = mid + 1;
             }
         }
         return ans;
+    }
+
+    // Given an
+    // array arr
+    // of positive
+    // integers sorted
+    // in a
+    // strictly increasing order,
+    // and an
+    // integer k.
+
+    // Return the
+    // kth positive
+    // integer that
+    // is missing from this array.
+
+    public static int findKthPositive(int[] arr, int k) {
+        int low = 0, high = arr.length-1;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            int missing = arr[mid] - (mid + 1);
+            if(missing < k) low = mid +1;
+            else high = mid-1;
+        }
+        return high + 1 + k;
     }
 
     public static void main(String[] args) {
@@ -524,6 +550,6 @@ public class Main {
         // System.out.println(minEatingSpeed(new int[] {3, 6, 7, 11}, 8));
 
         // capacity to ship packages withing D days
-        System.out.println(possibleShipping(new int[] {1,2,3,4,5,6,7,8,9,10}, 5, 15));
+        System.out.println(possibleShipping(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 5, 15));
     }
 }
