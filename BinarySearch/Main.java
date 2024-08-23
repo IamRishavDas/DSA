@@ -1,5 +1,7 @@
 package DSA.BinarySearch;
 
+import java.util.Arrays;
+
 public class Main {
 
     // implement Binary Search using recursive method
@@ -514,6 +516,49 @@ public class Main {
         return high + 1 + k;
     }
 
+    public static int[] max_min(int[] arr){
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        for(int i: arr){
+            max = Math.max(max, i);
+            min = Math.min(min, i);
+        }
+        return new int[] {min, max};
+    }
+    // aggressive cows problem - place the cows in such way the min distance between cows is the max
+    public static int aggressiveCows(int[] stalls, int cows){
+        Arrays.sort(stalls);
+        var range = max_min(stalls);
+
+        // using linear search
+        // for(int i=1; i<=(range[1] - range[0]); i++){
+        //     if(weCanPlace(stalls, cows, i)) continue;
+        //     else return i-1;
+        // }
+        // return -1;
+
+        // using binary search
+        int low = 1, high = range[1] - range[0], ans = low;
+        while(low <= high){
+            int mid = low + (high - low)/2;
+            if(weCanPlace(stalls, cows, mid)) {
+                ans = mid;
+                low = mid + 1;
+            } else high = mid - 1;
+        }
+        return ans;
+    }
+
+    public static boolean weCanPlace(int[] stalls, int cows, int minDist){
+        int lastCow = stalls[0], countCows = 1;
+        for(int i=1; i<stalls.length; i++){
+            if((stalls[i] - lastCow) >= minDist){
+                countCows++;
+                lastCow = stalls[i];
+            }
+        }
+        return countCows >= cows;
+    }
+
     public static void main(String[] args) {
         // implement Binary Search
         // int[] arr = {1,3,5,6,6};
@@ -550,6 +595,8 @@ public class Main {
         // System.out.println(minEatingSpeed(new int[] {3, 6, 7, 11}, 8));
 
         // capacity to ship packages withing D days
-        System.out.println(possibleShipping(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 5, 15));
+        // System.out.println(possibleShipping(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 5, 15));
+
+        System.out.println(aggressiveCows(new int[] {0, 9, 7, 3, 4, 10}, 4));
     }
 }
