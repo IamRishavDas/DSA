@@ -1,6 +1,7 @@
 package DSA.BinarySearch;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Main {
 
@@ -559,6 +560,124 @@ public class Main {
         return countCows >= cows;
     }
 
+    // place k individual new gas stations such that the max distance is minimized
+    public static double minimizeMaxGasStationDistance(int[] arr, int k){
+        int n = arr.length;
+        int[] howMany = new int[n-1];
+        for(int i=0; i<n-1; i++) howMany[i] = 0;
+
+        for(int gasStation=1; gasStation<=k; gasStation++){
+            double maxSection = -1;
+            int maxIndex = -1;
+
+            for(int i=0; i<n-1; i++){
+                double diff = arr[i+1] - arr[i];
+                double sectionLength = diff/(double)(howMany[i] + 1);
+                if(sectionLength > maxSection){
+                    maxSection = sectionLength;
+                    maxIndex = i;
+                }
+            }
+            howMany[maxIndex]++;
+        }
+
+        double maxAns = 1;
+        for(int i=0; i<n-1; i++){
+            double diff = arr[i+1] - arr[i];
+            double sectionLength = diff/(double)(howMany[i]+1);
+            maxAns = Math.max(maxAns, sectionLength);
+        }
+        return maxAns;
+    }
+    
+    // place k individual new gas stations such that the max distance is minimized using max heap data structure
+
+    static class Pair{
+        double first; 
+        int second;
+        public Pair(double first, int second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+    public static double minimizeMaxGasStationDistanceBetterSolution(int[] arr, int k){
+        int n = arr.length;
+        int[] howMany = new int[n-1];
+        for(int i=0; i<n-1; i++) howMany[i] = 0;
+
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> Double.compare(b.first, a.first));
+
+        // inserting n-1 elements in pq with the distance values
+        for(int i=0; i<n-1; i++){
+            pq.add(new Pair(arr[i+1]-arr[i], i));
+        }
+
+        for(int gasStation=1; gasStation<=k; gasStation++){
+            // finding the max section and inserting into the new gas station
+            Pair tp = pq.poll();
+            int secIndex = tp.second;
+
+            // insert the current gas station
+            howMany[secIndex]++;
+
+            double initDiff = arr[secIndex + 1] - arr[secIndex];
+            double newSectionLength = initDiff/(double)(howMany[secIndex] + 1);
+            pq.add(new Pair(newSectionLength, secIndex));
+        }
+
+        double maxAns = -1;
+        for(int i=0; i<n-1; i++){
+            double diff = arr[i+1] - arr[i];
+            double sectionLength = diff/(double)(howMany[i]+1);
+            maxAns = Math.max(maxAns, sectionLength);
+        }
+        return pq.peek().first;
+    }
+
+    // two pointer approach without using extra space
+    // find median of two sorted arrays
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length, n2 = nums2.length;
+        int n = n1 + n2;
+
+        int index1 = (int)(n/2)-1, index2 = (int)(n/2), elem1 = -1, elem2 = -1;
+        int p1 = 0, p2 = 0, count = 0;
+        while(p1 < n1 && p2 < n2){
+            if(nums1[p1] <= nums2[p2]){
+                if(index1 == count) elem1 = nums1[p1];
+                if(index2 == count) elem2 = nums1[p1];
+                count++;
+                p1++;
+            } else {
+                if(index1 == count) elem1 = nums2[p2];
+                if(index2 == count) elem2 = nums2[p2];
+                count++;
+                p2++;
+            }
+        }
+
+        while(p1 < n1){
+            if(index1 == count) elem1 = nums1[p1];
+            if(index2 == count) elem2 = nums1[p1];
+            count++;
+            p1++;
+        }
+
+        while(p2 < n2){
+            if(index1 == count) elem1 = nums2[p2];
+            if(index2 == count) elem2 = nums2[p2];
+            count++;
+            p2++;
+        }
+
+        if(n % 2 == 0) {
+            return (double)((double)(elem1 + elem2)/(double)2);
+        } else {
+            return (double)elem2;
+        }
+    }
+
+
     public static void main(String[] args) {
         // implement Binary Search
         // int[] arr = {1,3,5,6,6};
@@ -597,6 +716,10 @@ public class Main {
         // capacity to ship packages withing D days
         // System.out.println(possibleShipping(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 5, 15));
 
-        System.out.println(aggressiveCows(new int[] {0, 9, 7, 3, 4, 10}, 4));
+        // System.out.println(aggressiveCows(new int[] {0, 9, 7, 3, 4, 10}, 4));
+
+        // System.out.println(minimizeMaxGasStationDistanceBetterSolution(new int[] {1, 13, 17, 23}, 5));
+
+        System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
     }
 }
