@@ -1,5 +1,7 @@
 package DSA.BinarySearch;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
@@ -677,6 +679,81 @@ public class Main {
         }
     }
 
+    // find the row with max no of 1s from the matrix with zero and one in sorted order in every row
+
+    // brute force solution
+    public static int[] findRowAndMaxOnes(int[][] mat){
+        int noOfOnes = -1;
+        int rowWithMaxOne = -1;
+        for(int i=0; i<mat.length; i++){
+            int count = 0;
+            for(int j=0; j<mat[i].length; j++){
+                if(mat[i][j] ==  1) count++;
+            }
+            if(noOfOnes < count){
+                noOfOnes = count;
+                rowWithMaxOne = i;
+            }
+        }
+        return new int[] {rowWithMaxOne, noOfOnes};
+    }
+
+    // binary search approach
+    public static int countOneInRow(int[] arr){
+        int low = 0, high = arr.length - 1;
+        if(arr[high] == 0) return 0;
+        while(low <= high) {
+            int mid = (low + high) >> 1;
+            if(arr[mid] == 1){
+                high = mid-1;
+            } else {
+                low = mid+1;
+            }
+        }
+        return arr.length-low;
+    }
+
+    public static int[] rowAndMaximumOnes(int[][] mat) {
+        int rowWithMinOne = -1, noOfOne = -1;
+        for(int i=0; i<mat.length; i++){
+            Arrays.sort(mat[i]);
+            int count = countOneInRow(mat[i]);
+            if(noOfOne < count){
+                rowWithMinOne = i;
+                noOfOne = count;
+            }
+        }
+        return new int[] {rowWithMinOne, noOfOne};
+    }
+
+    // binary search in 2D array using log(m*n) time [converting 1D coordinate to 2d coordinate]
+    public static boolean search2DMatrix(ArrayList<ArrayList<Integer>> mat, int target){
+        int m = mat.size(), n = mat.get(0).size();
+        int low = 0, high = (m * n) -1;
+        while(low <= high){
+            int mid = (low + high) >> 1; // low + (high - low)/2;
+            int i = mid/m, j = mid%m;
+            if(mat.get(i).get(j) == target) return true;
+            else if(mat.get(i).get(j) > target) high = mid - 1;
+            else low = mid + 1;
+        }
+        return false;
+    }
+
+    // binary search in the 2D array where the matrix is sorted in row wise and as well as column wise (not entirely sorted)
+    public static boolean search2DMatrix_II(int[][] matrix, int target){
+        int m = matrix.length, n = matrix[0].length;
+        int row = 0, col = n-1;
+
+        while(row < m && col >= 0){
+            if(matrix[row][col] == target) return true;
+            else if(matrix[row][col] > target) col--;
+            else row++;
+        }
+        return false;
+    }
+
+
 
     public static void main(String[] args) {
         // implement Binary Search
@@ -720,6 +797,12 @@ public class Main {
 
         // System.out.println(minimizeMaxGasStationDistanceBetterSolution(new int[] {1, 13, 17, 23}, 5));
 
-        System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
+        // System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
+
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        list.add(new ArrayList<>(Arrays.asList(1,2,3,4)));
+        list.add(new ArrayList<>(Arrays.asList(5,6,7,8)));
+        list.add(new ArrayList<>(Arrays.asList(9,10,11,12)));
+        System.out.println(search2DMatrix(list,100));
     }
 }
