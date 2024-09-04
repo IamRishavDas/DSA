@@ -798,10 +798,10 @@ public class Main {
 
         // System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
 
-        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-        list.add(new ArrayList<>(Arrays.asList(1,2,3,4)));
-        list.add(new ArrayList<>(Arrays.asList(5,6,7,8)));
-        list.add(new ArrayList<>(Arrays.asList(9,10,11,12)));
-        System.out.println(search2DMatrix(list,100));
+        // ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        // list.add(new ArrayList<>(Arrays.asList(1,2,3,4)));
+        // list.add(new ArrayList<>(Arrays.asList(5,6,7,8)));
+        // list.add(new ArrayList<>(Arrays.asList(9,10,11,12)));
+        // System.out.println(search2DMatrix(list,100));
     }
 }
