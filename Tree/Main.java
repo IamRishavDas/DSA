@@ -1,5 +1,6 @@
 package DSA.Tree;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,61 @@ public class Main {
         System.out.print(node.data + " ");
     }
 
+    public static List<Integer> preorderIterative(Node root){
+        if(root == null) return new ArrayList<>();
+        ArrayDeque<Node> stack = new ArrayDeque<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        stack.push(root);
+
+        while(!stack.isEmpty()){
+            Node node = stack.pop();
+            list.add(node.data);
+            if(node.right != null) stack.push(node.right);
+            if(node.left != null) stack.push(node.left);
+        }
+        return list;
+    }
+
+    public static List<Integer> inorderIterative(Node root){
+        if(root == null) return new ArrayList<>();
+        ArrayDeque<Node> stack = new ArrayDeque<>();
+        List<Integer> list = new ArrayList<>();
+        Node node = root;
+        while(true){
+            if(node != null){
+                stack.push(node);
+                node = node.left;
+            } else {
+                if(stack.isEmpty()) break;
+                node = stack.pop();
+                list.add(node.data);
+                node = node.right;
+            }
+        }
+        return list;
+    }
+
+    public static List<Integer> postorderIterative(Node root){
+        if(root == null) return new ArrayList<>();
+        ArrayDeque<Node> stack1 = new ArrayDeque<>();
+        ArrayDeque<Integer> stack2 = new ArrayDeque<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        stack1.push(root);
+
+        while(!stack1.isEmpty()){
+            Node node = stack1.pop();
+            stack2.push(node.data);
+            if(node.left != null) stack1.push(node.left);
+            if(node.right != null) stack1.push(node.right);
+        }
+
+        while(!stack2.isEmpty()){
+            list.add(stack2.pop());
+        }
+
+        return list;
+    }
+
     public static List<List<Integer>> levelOrder(Node root){
         if(root == null) return new LinkedList<>();
         List<List<Integer>> wrapList = new LinkedList<>();
@@ -69,7 +125,11 @@ public class Main {
     public static void main(String[] args) {
         // preorderRecusrive(tree()); System.out.println();
         // inorderRecursive(tree()); System.out.println();
-        // postorderRecursive(tree()); System.out.println();
-        System.out.println(levelOrder(tree()));
+        postorderRecursive(tree()); System.out.println();
+        // System.out.println(levelOrder(tree()));
+
+        // System.out.println(preorderIterative(tree()));
+        // System.out.println(inorderIterative(tree()));
+        System.out.println(postorderIterative(tree()));
     }
 }
