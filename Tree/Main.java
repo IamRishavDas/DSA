@@ -2,6 +2,7 @@ package DSA.Tree;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -93,6 +94,45 @@ public class Main {
         return list;
     }
 
+
+    // for the pair of (TreeNode, number of the Node)
+    static class StackNode{
+        public Node node;
+        public int num;
+        public StackNode(Node node, int num){
+            this.node = node;
+            this.num  = num;
+        }
+    }
+    public static List<List<Integer>> preorder_inorder_postorder(Node root){
+        if(root == null) return new ArrayList<>();
+
+        List<Integer> preorder = new ArrayList<>();
+        List<Integer> inorder = new ArrayList<>();
+        List<Integer> postorder = new ArrayList<>();
+
+        ArrayDeque<StackNode> stack = new ArrayDeque<>();
+        StackNode rootNode = new StackNode(root, 1);
+        stack.push(rootNode);
+        while(!stack.isEmpty()){
+            StackNode node = stack.pop();
+            if(node.num == 1){ // for preorder
+                preorder.add(node.node.data);
+                stack.push(new StackNode(node.node, ++node.num));
+                if(node.node.left != null) stack.push(new StackNode(node.node.left, 1));
+            } else if(node.num == 2){ // for inorder
+                inorder.add(node.node.data);
+                stack.push(new StackNode(node.node, ++node.num));
+                if(node.node.right != null) stack.push(new StackNode(node.node.right, 1));
+            } else if(node.num == 3){ // for postorder
+                postorder.add(node.node.data);
+            }
+        }
+        return Arrays.asList(preorder, inorder, postorder);
+    }
+
+
+    // BFS
     public static List<List<Integer>> levelOrder(Node root){
         if(root == null) return new LinkedList<>();
         List<List<Integer>> wrapList = new LinkedList<>();
@@ -123,13 +163,15 @@ public class Main {
         return root;
     }
     public static void main(String[] args) {
-        // preorderRecusrive(tree()); System.out.println();
-        // inorderRecursive(tree()); System.out.println();
+        preorderRecusrive(tree()); System.out.println();
+        inorderRecursive(tree()); System.out.println();
         postorderRecursive(tree()); System.out.println();
         // System.out.println(levelOrder(tree()));
 
         // System.out.println(preorderIterative(tree()));
         // System.out.println(inorderIterative(tree()));
-        System.out.println(postorderIterative(tree()));
+        // System.out.println(postorderIterative(tree()));
+
+        System.out.println(preorder_inorder_postorder(tree()));
     }
 }
