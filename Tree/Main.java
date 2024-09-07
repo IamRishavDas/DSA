@@ -149,7 +149,33 @@ public class Main {
             wrapList.add(sublist);
         }
         return wrapList;
+    }
 
+    // finding the height of the tree using recursion
+    public static int findMaxDepth(Node root){
+        if(root == null) return 0;
+        int lh = findMaxDepth(root.left);
+        int rh = findMaxDepth(root.right);
+        return Math.max(lh, rh) + 1;
+    }
+
+    // finding the max depth using the iterative method using the queue data structure
+    public static int findMaxDepthIterative(Node root){
+        if(root == null) return 0;
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int levelCount = 0;
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            for(int i=1; i<= levelNum; i++){
+                if(queue.peek().left!= null) queue.offer(queue.peek().left);
+                if(queue.peek().right!= null) queue.offer(queue.peek().right);
+                queue.poll();
+            }
+            levelCount++;
+        }
+        return levelCount;
     }
 
     public static Node tree(){
@@ -163,15 +189,18 @@ public class Main {
         return root;
     }
     public static void main(String[] args) {
-        preorderRecusrive(tree()); System.out.println();
-        inorderRecursive(tree()); System.out.println();
-        postorderRecursive(tree()); System.out.println();
+        // preorderRecusrive(tree()); System.out.println();
+        // inorderRecursive(tree()); System.out.println();
+        // postorderRecursive(tree()); System.out.println();
         // System.out.println(levelOrder(tree()));
 
         // System.out.println(preorderIterative(tree()));
         // System.out.println(inorderIterative(tree()));
         // System.out.println(postorderIterative(tree()));
 
-        System.out.println(preorder_inorder_postorder(tree()));
+        // System.out.println(preorder_inorder_postorder(tree()));
+
+        System.out.println(findMaxDepth(tree()));
+        System.out.println(findMaxDepthIterative(tree()));
     }
 }
