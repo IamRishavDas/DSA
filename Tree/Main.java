@@ -178,6 +178,25 @@ public class Main {
         return levelCount;
     }
 
+
+    // find the diameter of the tree using the height of the tree code O(n)
+    public static int height(Node root, int[] diameter){
+        if(root == null) return 0;
+        int lh = height(root.left, diameter);
+        int rh = height(root.right, diameter);
+
+        diameter[0] = Math.max(diameter[0], lh + rh);
+
+        return Math.max(lh, rh) + 1;
+    }
+
+    public static int findDiameter(Node root){
+        if(root == null) return 0;
+        var diameter = new int[1];
+        height(root, diameter);
+        return diameter[0];
+    }
+
     public static Node tree(){
         Node root = new Node(1);
         root.left = new Node(2);
